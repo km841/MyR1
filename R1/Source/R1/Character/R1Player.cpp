@@ -27,14 +27,34 @@ AR1Player::AR1Player()
 	SpringArm->SetRelativeRotation(FRotator(-60, 0, 0));
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, -0.f));
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void AR1Player::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
+
+	RookissDelegate.BindUObject(this, &ThisClass::TestFunc);
+
+	RookissDelegate.Execute();
+
+	RookissDelegate.Unbind();
 }
 
 void AR1Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AR1Player::TestFunc()
+{
+	UE_LOG(LogTemp, Log, TEXT("GOOD!"));
+}
+
+void AR1Player::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Log, TEXT("OnBeginOverlap"));
 }

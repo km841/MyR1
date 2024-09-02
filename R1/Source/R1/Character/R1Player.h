@@ -6,6 +6,8 @@
 #include "Character/R1Character.h"
 #include "R1Player.generated.h"
 
+DECLARE_DELEGATE(FRookissDelegate);
+
 /**
  * 
  */
@@ -25,6 +27,11 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void TestFunc();
+
+private:
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -32,5 +39,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UCameraComponent> Camera;
+
+	FRookissDelegate RookissDelegate;
 	
 };
