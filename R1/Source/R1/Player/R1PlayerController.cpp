@@ -52,6 +52,56 @@ void AR1PlayerController::SetupInputComponent()
 	}
 }
 
+void AR1PlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	TickCursorTrace();
+}
+
+void AR1PlayerController::TickCursorTrace()
+{
+	if (bMousePressed)
+	{
+		return;
+	}
+
+	FHitResult OutCursorHit;
+	bool bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, OutCursorHit);
+
+	if (bHitSuccessful == false)
+	{
+		return;
+	}
+
+	AR1Character* LocalHighlightActor = Cast<AR1Character>(OutCursorHit.GetActor());
+
+	if (LocalHighlightActor == nullptr)
+	{
+		if (HighlightActor)
+		{
+			HighlightActor->UnHighlight();
+		}
+	}
+	else
+	{
+		if (HighlightActor)
+		{
+			if (HighlightActor != LocalHighlightActor)
+			{
+				HighlightActor->UnHighlight();
+				LocalHighlightActor->Highlight();
+			}
+		}
+		else
+		{
+			LocalHighlightActor->Highlight();
+		}
+	}
+
+	HighlightActor = LocalHighlightActor;
+
+}
+
 void AR1PlayerController::OnInputStarted()
 {
 	StopMovement();
