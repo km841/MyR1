@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "R1Define.h"
+#include "GameplayTagContainer.h"
 #include "R1PlayerController.generated.h"
 
 struct FInputActionValue;
@@ -23,9 +25,13 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
+
+public:
+	virtual void HandleGameplayEvent(FGameplayTag EventTag);
 	
 private:
 	void TickCursorTrace();
+	void ChaseTargetAndAttack();
 
 protected:
 	//UPROPERTY(EditAnywhere, Category=Input)
@@ -40,8 +46,8 @@ protected:
 	//UPROPERTY(EditAnywhere, Category = Input)
 	//TObjectPtr<class UInputAction> TurnAction;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UAnimMontage> AttackMontage;
+	//UPROPERTY(EditAnywhere)
+	//TObjectPtr<class UAnimMontage> AttackMontage;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -55,6 +61,9 @@ private:
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
 
+	ECreatureState GetCreatureState();
+	void SetCreatureState(ECreatureState InState);
+
 private:
 	FVector CachedDestination;
 	float FollowTime;
@@ -67,5 +76,11 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<class AR1Character> HighlightActor;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UAnimMontage> AttackMontage;
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<class AR1Player> R1Player;
 	
 };

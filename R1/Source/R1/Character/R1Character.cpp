@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "R1Define.h"
 
 // Sets default values
 AR1Character::AR1Character()
@@ -27,6 +28,10 @@ void AR1Character::Tick(float DeltaTime)
 
 }
 
+void AR1Character::HandleGameplayEvent(FGameplayTag EventTag)
+{
+}
+
 void AR1Character::Highlight()
 {
 	bHighlighted = true;
@@ -35,4 +40,25 @@ void AR1Character::Highlight()
 void AR1Character::UnHighlight()
 {
 	bHighlighted = false;
+}
+
+void AR1Character::OnDamaged(int32 Damage, TObjectPtr<AR1Character> Attacker)
+{
+	Hp = FMath::Clamp(Hp - Damage, 0, MaxHp);
+	if (Hp == 0)
+	{
+		OnDead(Attacker);
+	}
+
+	D(FString::Printf(TEXT("%d"), Hp));
+}
+
+void AR1Character::OnDead(TObjectPtr<AR1Character> Attacker)
+{
+	if (CreatureState == ECreatureState::Dead)
+	{
+		return;
+	}
+
+	CreatureState = ECreatureState::Dead;
 }
