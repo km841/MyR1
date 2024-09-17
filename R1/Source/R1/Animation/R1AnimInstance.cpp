@@ -15,7 +15,7 @@ void UR1AnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
-	Character = Cast<AR1Player>(TryGetPawnOwner());
+	Character = Cast<AR1Character>(TryGetPawnOwner());
 
 	if (Character)
 		MovementComponent = Character->GetCharacterMovement();
