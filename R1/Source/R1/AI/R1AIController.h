@@ -15,7 +15,7 @@ class R1_API AR1AIController : public AAIController
 	GENERATED_BODY()
 
 public:
-	AR1AIController(const FObjectInitializer& ObjectInitializer = FObjectInitializer());
+	AR1AIController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	virtual void OnPossess(APawn* InPawn) override;
 
 public:
